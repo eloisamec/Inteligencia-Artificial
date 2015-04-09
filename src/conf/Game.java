@@ -20,10 +20,10 @@ public class Game {
 		Player player1 = new Player(in.nextLine());
 		human.setPlayer(player1);
 		
-		System.out.println("Informe o número de jogadores: ");
+		System.out.println("Informe o numero de jogadores: ");
 		int numPlayers = in.nextInt();
 		while (numPlayers < 3) {
-			System.out.println("Número de jogadores inválido! Digite um valor entre 3 e 6: ");
+			System.out.println("Numero de jogadores invalido! Digite um valor entre 3 e 6: ");
 			numPlayers = in.nextInt();
 		}
 		List<Player> players = new ArrayList<Player>();
@@ -40,10 +40,10 @@ public class Game {
 		}
 		
 		List<Integer> hands = new ArrayList<Integer>();
-		System.out.println("Indique o número de chopsticks da sua mão: ");
+		System.out.println("Indique o numero de chopsticks da sua mao: ");
 		int hand = in.nextInt();
 		while (hand <= 0 || hand > 3) {
-			System.out.println("Valor escolhido inválido. Escolha entre 1 e 3");
+			System.out.println("Valor escolhido invalido. Escolha entre 1 e 3");
 			hand = in.nextInt();
 		}
 		hands.add(hand);
