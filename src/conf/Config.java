@@ -4,12 +4,12 @@ public class Config {
 	
 	private int numPlayers;
 	private boolean gameMode;
-	private static int rounds;
+	private int round;
 	
 	public Config(int numPlayers, boolean gameMode){
 		this.numPlayers = numPlayers;
 		this.gameMode = gameMode;
-		this.rounds = 1;
+		this.round = 1;
 	}
 	
 	public int getNumPlayers() {
@@ -25,12 +25,12 @@ public class Config {
 		this.gameMode = gameMode;
 	}
 
-	public static int getRounds() {
-		return rounds;
+	public int getRound() {
+		return round;
 	}
 
-	public static void setRounds(int rounds) {
-		rounds = rounds;
+	public void setRound(int round) {
+		this.round = round;
 	}
 	
 }

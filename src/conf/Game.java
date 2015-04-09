@@ -33,6 +33,8 @@ public class Game {
 			players.add(player);
 		}
 		
+		Config config = new Config(numPlayers, true);
+		
 		for(Player p : players) {
 			System.out.println(p.getName());
 		}
@@ -46,9 +48,9 @@ public class Game {
 		}
 		hands.add(hand);
 		ComputerAI pcai = new ComputerAI();
-		int round = Config.getRounds();
+		
 		for (int i = 2; i <= numPlayers; i++) {
-			pcai.setHand(hand, round);
+			pcai.getHand(hand, config.getRound());
 			hands.add(hand);
 		}
 		
