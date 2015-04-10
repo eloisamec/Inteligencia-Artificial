@@ -17,23 +17,23 @@ public class Game {
 		
 		Player human = new Player(in.nextLine());
 		
-		System.out.println("Informe o número de jogadores: ");
+		System.out.println("Informe o numero de jogadores: ");
 		int numPlayers = in.nextInt();
 		while (numPlayers < 3 && numPlayers > 5) {
-			System.out.println("Número de jogadores inválido! Digite um valor entre 3 e 5: ");
+			System.out.println("Número de jogadores invalido! Digite um valor entre 3 e 5: ");
 			numPlayers = in.nextInt();
 		}
 		
-		System.out.println("Selecione o modo de jogo: 0 - Último paga a conta; 1 - Primeiro ganha;");
+		System.out.println("Selecione o modo de jogo: 0 - Ultimo paga a conta; 1 - Primeiro ganha;");
 		boolean gameMode = in.nextInt() == 0 ? false : true;
 		
 		Settings settings = new Settings(numPlayers, gameMode);
 		int numChopsticksInGame = 3 * numPlayers;
 
-		System.out.println("Indique o número de chopsticks da sua mão: ");
+		System.out.println("Indique o numero de chopsticks da sua mao: ");
 		int hand = in.nextInt();
 		while (hand <= 0 || hand > 3) {
-			System.out.println("Valor escolhido inválido. Escolha entre 1 e 3");
+			System.out.println("Valor escolhido invalido. Escolha entre 1 e 3");
 			hand = in.nextInt();
 		}
 		human.setHand(hand);
