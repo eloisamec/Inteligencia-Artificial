@@ -14,7 +14,7 @@ public class Utils {
 		return hand;
 	}
 
-	public int randomGuess(int chopsticks, int round) {
+	public static int makeGuess(int chopsticks, int round, int myHand) {
 		
 		int guess = 0;
 		if (round == 1) {

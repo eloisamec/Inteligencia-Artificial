@@ -1,12 +1,25 @@
 package conf;
 
-public class Config {
+import java.util.List;
+
+import ai.Player;
+
+public class Settings {
 	
 	private int numPlayers;
 	private boolean gameMode;
 	private int round;
+	private List<Player> winners;
 	
-	public Config(int numPlayers, boolean gameMode){
+	public List<Player> getWinners() {
+		return winners;
+	}
+
+	public void setWinners(List<Player> winners) {
+		this.winners = winners;
+	}
+
+	public Settings(int numPlayers, boolean gameMode){
 		this.numPlayers = numPlayers;
 		this.gameMode = gameMode;
 		this.round = 1;

@@ -4,7 +4,25 @@ public class Player {
 
 	private String name;
 	private int chopsticks;
+	private int guess;
+	private int hand;
 	
+	public int getGuess() {
+		return guess;
+	}
+
+	public void setGuess(int guess) {
+		this.guess = guess;
+	}
+
+	public int getHand() {
+		return hand;
+	}
+
+	public void setHand(int hand) {
+		this.hand = hand;
+	}
+
 	public Player(String name) {
 		this.name = name;
 		this.chopsticks = 3;

@@ -4,58 +4,65 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import utils.Utils;
 import ai.ComputerAI;
-import ai.HumanAI;
 import ai.Player;
-
 
 public class Game {
 
 	public static void main(String[] args) {
 		
-		HumanAI human = new HumanAI();
-		System.out.println("Informe o nome do jogador: ");
+		System.out.println("Informe seu nome: ");
 		Scanner in = new Scanner(System.in);
 		
-		Player player1 = new Player(in.nextLine());
-		human.setPlayer(player1);
+		Player human = new Player(in.nextLine());
 		
 		System.out.println("Informe o numero de jogadores: ");
 		int numPlayers = in.nextInt();
-		while (numPlayers < 3) {
-			System.out.println("Numero de jogadores invalido! Digite um valor entre 3 e 6: ");
+		while (numPlayers < 3 && numPlayers > 5) {
+			System.out.println("Número de jogadores invalido! Digite um valor entre 3 e 5: ");
 			numPlayers = in.nextInt();
 		}
-		List<Player> players = new ArrayList<Player>();
-		players.add(player1);
-		for (int i = 2; i <= numPlayers; i++) {
-			Player player = new Player("player"+i);
-			players.add(player);
-		}
 		
-		Config config = new Config(numPlayers, true);
+		System.out.println("Selecione o modo de jogo: 0 - Ultimo paga a conta; 1 - Primeiro ganha;");
+		boolean gameMode = in.nextInt() == 0 ? false : true;
 		
-		for(Player p : players) {
-			System.out.println(p.getName());
-		}
-		
-		List<Integer> hands = new ArrayList<Integer>();
+		Settings settings = new Settings(numPlayers, gameMode);
+		int numChopsticksInGame = 3 * numPlayers;
+
 		System.out.println("Indique o numero de chopsticks da sua mao: ");
 		int hand = in.nextInt();
 		while (hand <= 0 || hand > 3) {
 			System.out.println("Valor escolhido invalido. Escolha entre 1 e 3");
 			hand = in.nextInt();
 		}
-		hands.add(hand);
-		ComputerAI pcai = new ComputerAI();
+		human.setHand(hand);
+
+		int sumHands = hand;
 		
+		List<Player> players = new ArrayList<Player>();
+		players.add(human);
 		for (int i = 2; i <= numPlayers; i++) {
-			pcai.getHand(hand, config.getRound());
-			hands.add(hand);
+			ComputerAI pc = new ComputerAI("player"+i);
+			pc.setNumChopsticks(numChopsticksInGame);
+			int myHand = Utils.randomHand(settings.getRound()); 
+			pc.setHand(myHand);
+			pc.setGuess(Utils.makeGuess(numChopsticksInGame, settings.getRound(), myHand));
+			sumHands += myHand;
+			players.add(pc);
 		}
 		
-		System.out.println();
+		String vencedor = "";
+		for (Player p : players) {
+			if (p.getGuess() == sumHands) {
+				vencedor = p.getName();
+				System.out.println("Vencedor da rodada: " + vencedor);
+				numChopsticksInGame--;
+			}
+		}
+		if (vencedor == "") {
+			System.out.println("Não tivemos vencedor na rodada");
+		}
 		in.close();
 	}
-
 }
