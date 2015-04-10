@@ -53,11 +53,15 @@ public class Game {
 		}
 		
 		String vencedor = "";
-		int numVencedores = 0;
 		for (Player p : players) {
 			if (p.getGuess() == sumHands) {
-				vencedor 
+				vencedor = p.getName();
+				System.out.println("Vencedor da rodada: " + vencedor);
+				numChopsticksInGame--;
 			}
+		}
+		if (vencedor == "") {
+			System.out.println("Não tivemos vencedor na rodada");
 		}
 		in.close();
 	}

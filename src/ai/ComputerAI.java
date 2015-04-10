@@ -1,13 +1,11 @@
 package ai;
 
 
-public class ComputerAI extends Player {
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.lang.*;
 
-public class ComputerAI extends HumanAI {
+public class ComputerAI extends Player {
 
 	private int numChopsticksInGame;
 	
@@ -23,7 +21,7 @@ public class ComputerAI extends HumanAI {
 		this.numChopsticksInGame = numChopsticks;
 	}
 	
-	private List getPossibilities(int chopsticks, int othersChopsticks, List guesses){
+	private List<Integer> getPossibilities(int chopsticks, int othersChopsticks, List<Integer> guesses){
 		LinkedList<Integer> possibilities = new LinkedList<Integer>();
 		for(int i=0; i<=othersChopsticks; i++){
 			int tmp = chopsticks+i;
@@ -38,8 +36,8 @@ public class ComputerAI extends HumanAI {
 		return possibilities;
 	}
 	
-	public void generateGuess(int chopsticks, int othersChopsticks, List guesses){
-		List possibilities = getPossibilities(chopsticks, othersChopsticks, guesses);
+	public void generateGuess(int chopsticks, int othersChopsticks, List<Integer> guesses){
+		List<Integer> possibilities = getPossibilities(chopsticks, othersChopsticks, guesses);
 		double standardDeviation = 0;
 		double mean = 0;
 		
