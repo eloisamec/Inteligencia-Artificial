@@ -65,10 +65,10 @@ public class Game {
 				if (!(p instanceof ComputerAI)) {
 					System.out.println("Faca seu palpite: ");
 					guess = in.nextInt();
-					while (guess < 0 || guess > numChopsticksInGame) {
+					while (guess < 0 || guess > numChopsticksInGame || guesses.contains(guess)) {
 						System.out
 								.println("Valor de palpite invalido. Valor do palpite deve ser entre 0 e "
-										+ numChopsticksInGame + ": ");
+										+ numChopsticksInGame + " e nao pode ser igual ao dos outros jogadores: ");
 						guess = in.nextInt();
 					}
 				} else {
@@ -86,7 +86,7 @@ public class Game {
 			for (Player p : controll) {
 				if (p.getGuess() == sumHands) {
 					vencedor = p.getName();
-					System.out.println("Vencedor da rodada: " + vencedor);
+					System.out.println("Vencedor da rodada foi " + vencedor + " com o palpite " + sumHands);
 					numChopsticksInGame--;
 					p.setChopsticks(p.getChopsticks() - 1);
 					if (p.getChopsticks() == 0
