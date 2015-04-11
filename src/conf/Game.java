@@ -17,19 +17,18 @@ public class Game {
 
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
-		System.out.println("Informe seu nome: ");
-		Player human = new Player(in.nextLine());
-
 		int numPlayers = settings.getNumPlayers();
 		int numChopsticksInGame = 3 * numPlayers;
 
 		List<Player> players = new ArrayList<Player>();
-		players.add(human);
+		ComputerAI pc = new ComputerAI("Computer AI");
+		players.add(pc);
 
 		for (int i = 2; i <= numPlayers; i++) {
-			ComputerAI pc = new ComputerAI("player" + i);
+			System.out.println("Informe seu nome: ");
+			Player human = new Player(in.nextLine());
 			pc.setNumChopsticks(numChopsticksInGame);
-			players.add(pc);
+			players.add(human);
 		}
 
 		List<Player> controll = new ArrayList<Player>();
@@ -37,33 +36,33 @@ public class Game {
 		while (players.size() >= 2) {
 			controll = players;
 			int sumHands = 0;
-
 			System.out.println("Vamos para a " + settings.getRound()
 					+ "a rodada!");
 			for (Player p : controll) {
 				if (!(p instanceof ComputerAI)) {
 					System.out
-							.println("Indique o numero de chopsticks da sua mao: ");
+							.println("Vez do Jogador "+ p.getName() +", indique o numero de chopsticks da sua mao: ");
 					int hand = in.nextInt();
-					while (hand <= 0 || hand > 3) {
+					while (hand <= 0 || hand > p.getChopsticks()) {
 						System.out
 								.println("Valor escolhido invalido. Escolha entre um valor entre 1 e 3: ");
 						hand = in.nextInt();
 					}
-					human.setHand(hand);
+					p.setHand(hand);
 					sumHands += hand;
 				} else {
 					int randomHand = Utils.randomHand(settings.getRound());
 					p.setHand(randomHand);
 					sumHands += randomHand;
+					System.out.println("Jogador "+ p.getName() +" tem "+ p.getHand()+" palitos na mão.");
 				}
 			}
-
+			System.out.println("Hora dos palpites!");
 			List<Integer> guesses = new ArrayList<Integer>();
 			for (Player p : controll) {
 				int guess = 0;
 				if (!(p instanceof ComputerAI)) {
-					System.out.println("Faca seu palpite: ");
+					System.out.println("Vez do Jogador "+ p.getName() +", faca seu palpite: ");
 					guess = in.nextInt();
 					while (guess < 0 || guess > numChopsticksInGame || guesses.contains(guess)) {
 						System.out
@@ -80,11 +79,11 @@ public class Game {
 						+ " escolheu o valor " + guess);
 				guesses.add(guess);
 			}
-
 			String vencedor = "";
 			int position = 0;
 			for (Player p : controll) {
 				if (p.getGuess() == sumHands) {
+					System.out.println("Jogador" + p.getName() + "com palpite" + p.getGuess()); 
 					vencedor = p.getName();
 					System.out.println("Vencedor da rodada foi " + vencedor + " com o palpite " + sumHands);
 					numChopsticksInGame--;
