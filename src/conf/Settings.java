@@ -7,7 +7,7 @@ import ai.Player;
 public class Settings {
 	
 	private int numPlayers;
-	private boolean gameMode;
+	private GameMode gameMode;
 	private int round;
 	private List<Player> winners;
 	
@@ -19,7 +19,7 @@ public class Settings {
 		this.winners = winners;
 	}
 
-	public Settings(int numPlayers, boolean gameMode){
+	public Settings(int numPlayers, GameMode gameMode){
 		this.numPlayers = numPlayers;
 		this.gameMode = gameMode;
 		this.round = 1;
@@ -31,10 +31,10 @@ public class Settings {
 	public void setNumPlayers(int numPlayers) {
 		this.numPlayers = numPlayers;
 	}
-	public boolean isGameMode() {
+	public GameMode getGameMode() {
 		return gameMode;
 	}
-	public void setGameMode(boolean gameMode) {
+	public void setGameMode(GameMode gameMode) {
 		this.gameMode = gameMode;
 	}
 
