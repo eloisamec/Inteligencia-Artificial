@@ -8,7 +8,7 @@ public class Player {
 	private int hand;
 	
 	public int getGuess() {
-		return guess;
+		return this.guess;
 	}
 
 	public void setGuess(int guess) {

@@ -21,31 +21,29 @@ public class Game {
 		int numChopsticksInGame = 3 * numPlayers;
 
 		List<Player> players = new ArrayList<Player>();
-		ComputerAI pc = new ComputerAI("Computer AI");
-		players.add(pc);
 
 		for (int i = 2; i <= numPlayers; i++) {
 			System.out.println("Informe seu nome: ");
 			Player human = new Player(in.nextLine());
-			pc.setNumChopsticks(numChopsticksInGame);
 			players.add(human);
 		}
+		
+		ComputerAI pc = new ComputerAI("Computer AI");
+		players.add(pc);
+		pc.setNumChopsticks(numChopsticksInGame);
 
 		List<Player> controll = new ArrayList<Player>();
 
 		while (players.size() >= 2) {
 			controll = players;
 			int sumHands = 0;
-			System.out.println("Vamos para a " + settings.getRound()
-					+ "a rodada!");
+			System.out.println("Vamos para a " + settings.getRound()+ "a rodada!" + " Palitos disponíveis: " + numChopsticksInGame);
 			for (Player p : controll) {
 				if (!(p instanceof ComputerAI)) {
-					System.out
-							.println("Vez do Jogador "+ p.getName() +", indique o numero de chopsticks da sua mao: ");
+					System.out.println("Vez do Jogador "+ p.getName() +", indique o numero de chopsticks da sua mao: ");
 					int hand = in.nextInt();
 					while (hand <= 0 || hand > p.getChopsticks()) {
-						System.out
-								.println("Valor escolhido invalido. Escolha entre um valor entre 1 e 3: ");
+						System.out.println("Valor escolhido invalido. Escolha entre um valor entre 1 e 3: ");
 						hand = in.nextInt();
 					}
 					p.setHand(hand);
@@ -64,38 +62,32 @@ public class Game {
 				if (!(p instanceof ComputerAI)) {
 					System.out.println("Vez do Jogador "+ p.getName() +", faca seu palpite: ");
 					guess = in.nextInt();
+					p.setGuess(guess);
 					while (guess < 0 || guess > numChopsticksInGame || guesses.contains(guess)) {
-						System.out
-								.println("Valor de palpite invalido. Valor do palpite deve ser entre 0 e "
+						System.out.println("Valor de palpite invalido. Valor do palpite deve ser entre 0 e "
 										+ numChopsticksInGame + " e nao pode ser igual ao dos outros jogadores: ");
 						guess = in.nextInt();
 					}
 				} else {
-					guess = Utils.generateGuess(p.getChopsticks(),
-							numChopsticksInGame, guesses);
+					guess = Utils.generateGuess(p.getChopsticks(), numChopsticksInGame, guesses);
 					p.setGuess(guess);
 				}
-				System.out.println("Jogador " + p.getName()
-						+ " escolheu o valor " + guess);
+				System.out.println("Jogador " + p.getName()	+ " escolheu o valor " + guess);
 				guesses.add(guess);
 			}
-			String vencedor = "";
+			String vencedor = null;
 			int position = 0;
 			for (Player p : controll) {
-				if (p.getGuess() == sumHands) {
-					System.out.println("Jogador" + p.getName() + "com palpite" + p.getGuess()); 
+				if (p.getGuess() == sumHands) { 
 					vencedor = p.getName();
 					System.out.println("Vencedor da rodada foi " + vencedor + " com o palpite " + sumHands);
 					numChopsticksInGame--;
 					p.setChopsticks(p.getChopsticks() - 1);
-					if (p.getChopsticks() == 0
-							&& settings.getGameMode() == GameMode.PrimeiroGanha) {
-						System.out.println("Jogo acabou! Vencedor e: "
-								+ p.getName());
+					if (p.getChopsticks() == 0 && settings.getGameMode() == GameMode.PrimeiroGanha) {
+						System.out.println("Jogo acabou! Vencedor e: " + p.getName());
 						return;
 					} else {
-						if (p.getChopsticks() == 0
-								&& settings.getGameMode() == GameMode.PagaConta) {
+						if (p.getChopsticks() == 0 && settings.getGameMode() == GameMode.PagaConta) {
 							System.out.println(p.getName()
 									+ " nao precisa pagar a conta! XD");
 							controll.remove(p);
@@ -110,8 +102,17 @@ public class Game {
 					position = controll.indexOf(p);
 				}
 			}
-			if (vencedor == "") {
+			if (vencedor == null) {
 				System.out.println("Não tivemos vencedor na rodada! Numero de palitos total foi: "  + sumHands);
+				players = new ArrayList<Player>();
+				if(position+1 < controll.size()) {
+					for (int i = position+1; i < controll.size(); i++) {
+						players.add(controll.remove(i));
+					}
+					players.addAll(controll);
+				} else {
+					position = 0;
+				}
 			} else {
 				players = new ArrayList<Player>();
 				for (int i = position; i < controll.size(); i++) {
