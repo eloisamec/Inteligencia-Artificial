@@ -112,7 +112,7 @@ public class Game {
 				}
 			}
 			if (vencedor == "") {
-				System.out.println("Não tivemos vencedor na rodada! Numero de palitos total foi: "  + sumHands);
+				System.out.println("Nao tivemos vencedor nesta rodada! Numero de palitos total foi: "  + sumHands);
 			} else {
 				players = new ArrayList<Player>();
 				for (int i = position; i < controll.size(); i++) {
