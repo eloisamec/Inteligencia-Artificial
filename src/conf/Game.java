@@ -40,10 +40,10 @@ public class Game {
 			System.out.println("Vamos para a " + settings.getRound()+ "a rodada!" + " Palitos disponíveis: " + numChopsticksInGame);
 			for (Player p : controll) {
 				if (!(p instanceof ComputerAI)) {
-					System.out.println("Vez do Jogador "+ p.getName() +", indique o numero de chopsticks da sua mao: ");
+					System.out.println("Vez do Jogador "+ p.getName() +", indique o numero de palitos da sua mao: ");
 					int hand = in.nextInt();
-					while (hand <= 0 || hand > p.getChopsticks()) {
-						System.out.println("Valor escolhido invalido. Escolha entre um valor entre 1 e 3: ");
+					while (hand < 0 || hand > p.getChopsticks()) {
+						System.out.println("Valor escolhido invalido. Escolha entre um valor entre 0 e 3: ");
 						hand = in.nextInt();
 					}
 					p.setHand(hand);

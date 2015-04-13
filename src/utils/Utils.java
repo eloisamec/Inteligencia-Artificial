@@ -9,12 +9,15 @@ public class Utils {
 	public static int randomHand(int round) {
 
 		int hand = 0;
-		if (round == 1) {
-			hand = (int) Math.random() * 3 + 1;
-		} else {
-			hand = (int) Math.random() * 3;
-		}
-
+		double random = Math.random();
+		if (random <= 0.25)
+			hand = 0;
+		if (0.25 < random & random <= 0.5)
+			hand = 1;
+		if (0.5 < random & random <= 0.75)
+			hand = 2;
+		if (0.75 < random & random <= 1)
+			hand = 3;
 		return hand;
 	}
 
@@ -36,8 +39,7 @@ public class Utils {
 		return possibilities;
 	}
 
-	public static int generateGuess(int chopsticks, int othersChopsticks,
-			List<Integer> guesses) {
+	public static int generateGuess(int chopsticks, int othersChopsticks, List<Integer> guesses) {
 		List<Integer> possibilities = getPossibilities(chopsticks,
 				othersChopsticks, guesses);
 		double standardDeviation = 0;
@@ -70,8 +72,7 @@ public class Utils {
 		double tempGuess = (rand.nextGaussian() * standardDeviation) + mean;
 
 		int guess = ((Integer) possibilities.get(0)).intValue();
-		double closestDiff = Math.abs(((Integer) possibilities.get(0))
-				.intValue() - tempGuess);
+		double closestDiff = Math.abs(((Integer) possibilities.get(0)).intValue() - tempGuess);
 		for (int i = 1; i < possibilities.size(); i++) {
 			double tmp = Math.abs(((Integer) possibilities.get(i)).intValue()
 					- tempGuess);
