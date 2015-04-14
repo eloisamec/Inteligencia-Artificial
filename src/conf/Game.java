@@ -14,6 +14,7 @@ public class Game {
 	public static void main(String[] args) {
 
 		Settings settings = SelectGame.selectGame();
+		int position = 0;
 
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(System.in);
@@ -37,7 +38,7 @@ public class Game {
 		while (players.size() >= 2) {
 			controll = players;
 			int sumHands = 0;
-			System.out.println("Vamos para a " + settings.getRound()+ "a rodada!" + " Palitos disponíveis: " + numChopsticksInGame);
+			System.out.println("Vamos para a " + settings.getRound()+ "a rodada!" + " Palitos disponiveis: " + numChopsticksInGame);
 			for (Player p : controll) {
 				if (!(p instanceof ComputerAI)) {
 					System.out.println("Vez do Jogador "+ p.getName() +", indique o numero de palitos da sua mao: ");
@@ -52,7 +53,7 @@ public class Game {
 					int randomHand = Utils.randomHand(settings.getRound());
 					p.setHand(randomHand);
 					sumHands += randomHand;
-					System.out.println("Jogador "+ p.getName() +" tem "+ p.getHand()+" palitos na mão.");
+					System.out.println("Jogador "+ p.getName() +" tem "+ p.getHand()+" palitos na mao.");
 				}
 			}
 			System.out.println("Hora dos palpites!");
@@ -69,14 +70,13 @@ public class Game {
 						guess = in.nextInt();
 					}
 				} else {
-					guess = Utils.generateGuess(p.getChopsticks(), numChopsticksInGame, guesses);
+					guess = Utils.generateGuess(p.getHand(), p.getChopsticks(), numChopsticksInGame, guesses);
 					p.setGuess(guess);
 				}
 				System.out.println("Jogador " + p.getName()	+ " escolheu o valor " + guess);
 				guesses.add(guess);
 			}
 			String vencedor = null;
-			int position = 0;
 			for (Player p : controll) {
 				if (p.getGuess() == sumHands) { 
 					vencedor = p.getName();
@@ -102,24 +102,50 @@ public class Game {
 					position = controll.indexOf(p);
 				}
 			}
+			if(vencedor == null){
+				position = (position+1) % controll.size();
+				System.out.println("Nao tivemos vencedor na rodada! Numero de palitos total foi: "  + sumHands);
+			}	
+			
+			players = new ArrayList<Player>(); 
+			for (int i = position; i < controll.size(); i++) {
+				players.add(controll.remove(i));
+			}
+			 
+			for (int i = 0; i < position; i++) {
+				players.add(controll.remove(i));
+			}
+			
+			players.addAll(controll);
+			
+			/*
 			if (vencedor == null) {
-				System.out.println("Não tivemos vencedor na rodada! Numero de palitos total foi: "  + sumHands);
+				System.out.println("Nao tivemos vencedor na rodada! Numero de palitos total foi: "  + sumHands);
 				players = new ArrayList<Player>();
-				if(position+1 < controll.size()) {
-					for (int i = position+1; i < controll.size(); i++) {
-						players.add(controll.remove(i));
-					}
-					players.addAll(controll);
-				} else {
-					position = 0;
+				//if(position+1 < controll.size()) {
+				position = (position+1) % controll.size(); 
+				for (int i = position; i < controll.size(); i++) {
+					players.add(controll.remove(i));
 				}
+				 
+				for (int i = 0; i < position; i++) {
+					players.add(controll.remove(i));
+				}
+				
+				players.addAll(controll);
 			} else {
 				players = new ArrayList<Player>();
 				for (int i = position; i < controll.size(); i++) {
 					players.add(controll.remove(i));
 				}
+				 
+				for (int i = 0; i < position; i++) {
+					players.add(controll.remove(i));
+				}
+				
 				players.addAll(controll);
 			}
+			*/
 
 			settings.setRound(settings.getRound() + 1);
 		}
