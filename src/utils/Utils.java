@@ -9,17 +9,20 @@ public class Utils {
 	public static int randomHand(int round) {
 
 		int hand = 0;
-		if (round == 1) {
-			hand = (int) Math.random() * 3 + 1;
-		} else {
-			hand = (int) Math.random() * 3;
-		}
-
+		double random = Math.random();
+		if (random < 0.25)
+			hand = 0;
+		if (0.25 <= random & random < 0.5)
+			hand = 1;
+		if (0.5 <= random & random < 0.75)
+			hand = 2;
+		if (0.75 <= random & random < 1)
+			hand = 3;
+		
 		return hand;
 	}
 
-	private static List<Integer> getPossibilities(int chopsticks,
-			int othersChopsticks, List<Integer> guesses) {
+	private static List<Integer> getPossibilities(int chopsticks, int othersChopsticks, List<Integer> guesses) {
 		LinkedList<Integer> possibilities = new LinkedList<Integer>();
 		for (int i = 0; i <= othersChopsticks; i++) {
 			int tmp = chopsticks + i;
@@ -33,13 +36,22 @@ public class Utils {
 			if (!contains)
 				possibilities.add(new Integer(tmp));
 		}
+
+		/*
+		//print the list for tests!
+			System.out.println("Chopsticks = "+ chopsticks +"; Others Chopsticks = "+ othersChopsticks +"Going to print the possibilities list:");
+			for(int i = 0; i<possibilities.size(); i++)
+				System.out.println("Elemento " + i+ "; valor = " + ((Integer) possibilities.get(i)) );
+			System.out.println();
+		//end of print list secion!
+		 */
+		
 		return possibilities;
 	}
 
-	public static int generateGuess(int chopsticks, int othersChopsticks,
-			List<Integer> guesses) {
-		List<Integer> possibilities = getPossibilities(chopsticks,
-				othersChopsticks, guesses);
+	public static int generateGuess(int chopsticks, int maxMine, int everybodysChopsticks, List<Integer> guesses) {
+		int othersChopsticks = everybodysChopsticks - maxMine;
+		List<Integer> possibilities = getPossibilities(chopsticks, othersChopsticks, guesses);
 		double standardDeviation = 0;
 		double mean = 0;
 
@@ -60,8 +72,7 @@ public class Utils {
 			standardDeviation += Math.pow(
 					((Integer) possibilities.get(i)).intValue() - mean, 2.0);
 
-		standardDeviation = Math.pow(standardDeviation
-				/ (guesses.size() * 2 + possibilities.size() - 1.5), 0.5);
+		standardDeviation = Math.pow(standardDeviation / (guesses.size() * 2 + possibilities.size() - 1.5), 0.5);
 		// -1.5 for greater precision on estimation
 		// standard deviation calculated!
 
@@ -70,17 +81,14 @@ public class Utils {
 		double tempGuess = (rand.nextGaussian() * standardDeviation) + mean;
 
 		int guess = ((Integer) possibilities.get(0)).intValue();
-		double closestDiff = Math.abs(((Integer) possibilities.get(0))
-				.intValue() - tempGuess);
+		double closestDiff = Math.abs(((Integer) possibilities.get(0)).intValue() - tempGuess);
 		for (int i = 1; i < possibilities.size(); i++) {
-			double tmp = Math.abs(((Integer) possibilities.get(i)).intValue()
-					- tempGuess);
+			double tmp = Math.abs(((Integer) possibilities.get(i)).intValue() - tempGuess);
 			if (tmp < closestDiff) {
-				guess = i;
+				guess = ((Integer) possibilities.get(i)).intValue();
 				closestDiff = tmp;
 			}
 		}
-
 		return guess;
 	}
 }
